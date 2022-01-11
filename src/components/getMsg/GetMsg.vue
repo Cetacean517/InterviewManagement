@@ -1,22 +1,29 @@
 ﻿<template>
-<div>
-  <el-row>
-    <el-col :span="15" :offset="4">
-      <h1 class="text">HR : 管理简历招聘 入口 发布的简历信息</h1>
-    </el-col>
-  </el-row>
-  <GetMsg />
-</div>
+  <div class="hr-container">
+    <!-- 第一级页面 招聘信息展示 -->
+    <div v-for="(item,i) in form" :key="i" class="hr-table">
+      <el-card class="hr-card" shadow="hover" style="margin:'20rpx'">
+        <el-descriptions :title="item.title" :model="item">
+          <el-descriptions-item :label="lablename.type">
+            <el-tag size="small">{{ item.type }}</el-tag>
+          </el-descriptions-item>
+          <el-descriptions-item :label="lablename.position">{{ item.position }}</el-descriptions-item>
+          <el-descriptions-item :label="lablename.salaries">{{ item.salaries }}</el-descriptions-item>
+          <el-descriptions-item :label="lablename.frequency">{{ item.frequency }}</el-descriptions-item>
+          <el-descriptions-item :label="lablename.period">{{ item.period }}</el-descriptions-item>
+          <template slot="extra">
+            <el-button type="primary" size="small" @click="changeVisible = true">查看</el-button>
+          </template>
+        </el-descriptions>
+      </el-card>
+    </div>
 
-</template>
+  </div></template>
 
 <script>
-import GetMsg from '@/components/getMsg/GetMsg'
+
 export default {
-  name: 'HRmModule',
-  components: {
-    GetMsg
-  },
+  name: 'GetMsg',
   data() {
     return {
       formLabelWidth: '120px',
