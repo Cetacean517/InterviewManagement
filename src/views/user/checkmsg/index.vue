@@ -17,7 +17,7 @@
           <el-descriptions-item :label="lablename.frequency">{{ item.frequency }}</el-descriptions-item>
           <el-descriptions-item :label="lablename.period">{{ item.period }}</el-descriptions-item>
           <template slot="extra">
-            <el-button type="primary" size="small" @click="changeVisible = true">查看</el-button>
+            <el-button type="primary" size="small" @click="changeVisible = true; gotoLink()">查看</el-button>
           </template>
         </el-descriptions>
       </el-card>
@@ -31,6 +31,7 @@ export default {
   name: 'HRmModule',
   data() {
     return {
+      buttonName: '我要投递',
       formLabelWidth: '120px',
       lablename: { // 设置显示的标签
         title: '标题',
@@ -92,6 +93,12 @@ export default {
         content: '测试内容',
         workPlace: '上海'
       }]
+    }
+  },
+  methods: {
+    gotoLink() {
+      this.$router.push({ name: 'DetailPage', params: { name: '我要投递' }})
+      console.log(this.$route.params)
     }
   }
 }

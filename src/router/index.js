@@ -74,6 +74,13 @@ export const constantRoutes = [
       name: 'CheckMSG',
       component: () => import('@/views/user/checkmsg/index'),
       meta: { title: '查看招聘信息', icon: 'el-icon-s-help' }
+    },
+    {
+      path: 'detailPage', // url中字地址的名称
+      name: 'DetailPage',
+      hidden: true, // 用户查看招聘信息详细页，不能从侧边栏导航进入
+      component: () => import('@/views/user/detailPage/index'),
+      meta: { title: '查看招聘详情', icon: 'el-icon-s-help' }
     }]
   },
   {

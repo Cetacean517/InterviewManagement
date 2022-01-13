@@ -1,12 +1,12 @@
 ﻿<template>
-<div>
-  <el-row>
-    <el-col :span="15" :offset="4">
-      <h1 class="text">HR : 管理简历招聘 入口 发布的简历信息</h1>
-    </el-col>
-  </el-row>
-  <GetMsg />
-</div>
+  <div>
+    <el-row>
+      <el-col :span="15" :offset="4">
+        <h1 class="text">HR : 管理简历招聘 入口 发布的简历信息</h1>
+      </el-col>
+    </el-row>
+    <GetMsg />
+  </div>
 
 </template>
 

@@ -12,7 +12,7 @@
           <el-descriptions-item :label="lablename.frequency">{{ item.frequency }}</el-descriptions-item>
           <el-descriptions-item :label="lablename.period">{{ item.period }}</el-descriptions-item>
           <template slot="extra">
-            <el-button type="primary" size="small" @click="changeVisible = true">查看</el-button>
+            <el-button type="primary" size="small" @click="changeVisible = true; gotoLink()">查看</el-button>
           </template>
         </el-descriptions>
       </el-card>
@@ -26,6 +26,7 @@ export default {
   name: 'GetMsg',
   data() {
     return {
+      buttonName: '我要查看',
       formLabelWidth: '120px',
       lablename: { // 设置显示的标签
         title: '标题',
@@ -87,6 +88,13 @@ export default {
         content: '测试内容',
         workPlace: '上海'
       }]
+    }
+  },
+  methods: {
+    gotoLink() {
+      // this.$route.params.name = this.buttonName // 从本页跳转到详情页，显示的是“我要查看”
+      // this.$router.replace('/User/detailPage')
+      this.$router.push({ name: 'DetailPage', params: { name: '我要查看' }})
     }
   }
 }
