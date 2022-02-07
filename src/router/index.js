@@ -53,6 +53,26 @@ export const constantRoutes = [
       meta: { title: '发布招聘信息', icon: 'dashboard' }
     }]
   },
+  // HR 和 User公用的路由部分
+  {
+    path: '/Util', // url中字地址的名称
+    component: Layout,
+    redirect: '/Util/detailPage',
+    children: [{
+      path: 'detailPage',
+      name: 'DetailPage',
+      hidden: true, // 用户查看招聘信息详细页，不能从侧边栏导航进入
+      component: () => import('@/views/user/detailPage/index'),
+      meta: { title: '查看招聘详情', icon: 'el-icon-s-help' }
+    },
+    {
+      path: 'resumeBrief',
+      name: 'ResumeBrief',
+      hidden: true, // 用户查看招聘信息详细页，不能从侧边栏导航进入
+      component: () => import('@/views/hr/resume_brief_hr/index'),
+      meta: { title: '查看简历概要', icon: 'el-icon-s-help' }
+    }]
+  },
   {
     path: '/HR',
     component: Layout,
@@ -74,13 +94,6 @@ export const constantRoutes = [
       name: 'CheckMSG',
       component: () => import('@/views/user/checkmsg/index'),
       meta: { title: '查看招聘信息', icon: 'el-icon-s-help' }
-    },
-    {
-      path: 'detailPage', // url中字地址的名称
-      name: 'DetailPage',
-      hidden: true, // 用户查看招聘信息详细页，不能从侧边栏导航进入
-      component: () => import('@/views/user/detailPage/index'),
-      meta: { title: '查看招聘详情', icon: 'el-icon-s-help' }
     }]
   },
   {
