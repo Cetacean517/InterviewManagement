@@ -81,8 +81,8 @@ export default {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
         password: [{ required: true, trigger: 'blur', validator: validatePassword }]
       },
-      loading: false,
-      passwordType: 'password',
+      loading: false, // 控制 “加载” 状态（动画样式）
+      passwordType: 'password', // 控制password的可见性
       redirect: undefined
     }
   },
@@ -90,12 +90,16 @@ export default {
     $route: {
       handler: function(route) {
         this.redirect = route.query && route.query.redirect
+        console.log(this.redirect)
+        console.log(route.query)
+        console.log(route.query.redirect)
       },
       immediate: true
     }
   },
   methods: {
     showPwd() {
+      // 控制密码是否显示
       if (this.passwordType === 'password') {
         this.passwordType = ''
       } else {
@@ -106,6 +110,7 @@ export default {
       })
     },
     handleLogin() {
+      // 控制登录
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true

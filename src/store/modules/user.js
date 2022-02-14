@@ -10,8 +10,10 @@ const getDefaultState = () => {
   }
 }
 
+// 静态数据
 const state = getDefaultState()
 
+// set方法
 const mutations = {
   RESET_STATE: (state) => {
     Object.assign(state, getDefaultState())
@@ -27,8 +29,9 @@ const mutations = {
   }
 }
 
+// 设置异步操作
 const actions = {
-  // user login
+  // user login：通过用户名和密码登录，获取token并且保存
   login({ commit }, userInfo) {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
@@ -44,6 +47,7 @@ const actions = {
   },
 
   // get user info
+  // 获取用户的信息
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
       getInfo(state.token).then(response => {
