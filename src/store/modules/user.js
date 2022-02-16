@@ -4,9 +4,9 @@ import { resetRouter } from '@/router'
 
 const getDefaultState = () => {
   return {
-    token: getToken(),
-    name: '',
-    avatar: ''
+    token: getToken(), // token
+    name: '', // 用户名
+    avatar: '' // 权限
   }
 }
 
@@ -35,33 +35,37 @@ const actions = {
   login({ commit }, userInfo) {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
+      // 封装好的axios接口
       login({ username: username.trim(), password: password }).then(response => {
-        const { data } = response
-        commit('SET_TOKEN', data.token)
-        setToken(data.token)
-        resolve()
+        // 要从headers里面去拿token
+        const data = response.data
+        commit('SET_TOKEN', data)
+        setToken(data)
+        resolve() // 成功的情况
       }).catch(error => {
-        reject(error)
+        reject(error) // 失败情况
+        console.log(error)
       })
     })
   },
 
-  // get user info
-  // 获取用户的信息
+  // get user info roles table
+  // 获取用户的信息 权限信息
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
       getInfo(state.token).then(response => {
         const { data } = response
+        console.log(response)
 
         if (!data) {
           return reject('Verification failed, please Login again.')
         }
 
-        const { name, avatar } = data
+        const { username, role } = data
 
-        commit('SET_NAME', name)
-        commit('SET_AVATAR', avatar)
-        resolve(data)
+        commit('SET_NAME', username)
+        commit('SET_AVATAR', role)
+        resolve(data) // 注释改行可以让页面停留在登录页
       }).catch(error => {
         reject(error)
       })

@@ -6,9 +6,9 @@ import 'nprogress/nprogress.css' // progress bar style
 import { getToken } from '@/utils/auth' // get token from cookie
 import getPageTitle from '@/utils/get-page-title'
 
-NProgress.configure({ showSpinner: false }) // NProgress Configuration
+NProgress.configure({ showSpinner: false }) // NProgress Configuration 进度条的设置
 
-const whiteList = ['/login'] // no redirect whitelist
+const whiteList = ['/login'] // no redirect whitelist 白名单
 
 router.beforeEach(async(to, from, next) => {
   // start progress bar
@@ -16,6 +16,8 @@ router.beforeEach(async(to, from, next) => {
 
   // set page title
   document.title = getPageTitle(to.meta.title)
+  // console.log('permission:')
+  // console.log(to.meta) // e.g. {title: '发布招聘信息', icon: 'dashboard'}
 
   // determine whether the user has logged in
   const hasToken = getToken()
@@ -31,11 +33,13 @@ router.beforeEach(async(to, from, next) => {
         next()
       } else {
         try {
+          // 需要获得用户的信息
           // get user info
           await store.dispatch('user/getInfo')
 
           next()
         } catch (error) {
+          console.log('permission.js.catch')
           // remove token and go to login page to re-login
           await store.dispatch('user/resetToken')
           Message.error(error || 'Has Error')
