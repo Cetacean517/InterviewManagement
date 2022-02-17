@@ -10,7 +10,6 @@
         </div>
       </el-col>
     </el-row>
-
     <!-- 第一级页面 招聘信息展示 -->
     <div v-for="(item,i) in form" :key="i" class="hr-table">
       <el-card class="hr-card" shadow="hover" style="margin:'20rpx'">
