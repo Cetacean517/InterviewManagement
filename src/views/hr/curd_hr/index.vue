@@ -10,7 +10,6 @@
         </div>
       </el-col>
     </el-row>
-
     <!-- 第一级页面 招聘信息展示 -->
     <div v-for="(item,i) in form" :key="i" class="hr-table">
       <el-card class="hr-card" shadow="hover" style="margin:'20rpx'">
@@ -24,6 +23,7 @@
           <el-descriptions-item :label="lablename.period">{{ item.period }}</el-descriptions-item>
           <template slot="extra">
             <el-button type="primary" size="small" @click="changeVisible = true;changeItem(i)">修改</el-button>
+            <el-button type="danger" size="small" @click="deleteJobInfo(i)">删除</el-button>
           </template>
         </el-descriptions>
       </el-card>
@@ -78,7 +78,7 @@
       <span slot="footer" class="dialog-footer">
         <el-button @click="cancelAdd">取 消</el-button>
         <el-button @click="addVisible = false">保 存</el-button>
-        <el-button type="success" @click="addVisible = false">发 布</el-button>
+        <el-button type="success" @click="addJobInfo(); addVisible = false">发 布</el-button>
       </span>
     </el-dialog>
 
@@ -121,13 +121,14 @@
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="cancelAdd">取 消</el-button>
-        <el-button type="success" @click="changeVisible = false">发 布</el-button>
+        <el-button type="success" @click="fixJobInfo(); changeVisible = false">发 布</el-button>
       </span>
     </el-dialog>
   </div>
 </template>
 
 <script>
+import { getJobInformation, addJobInformation, fixJobInformation, deleteJobInformation } from '@/api/hr'
 export default {
   name: 'CurdHR',
   data() {
@@ -155,49 +156,35 @@ export default {
         content: '',
         workPlace: ''
       },
-      form: [{ // 从后端获取的数据放在这里
-        title: '招聘前端开发人员',
-        type: '实习生',
-        position: '前端开发',
-        salaries: '200/天',
-        frequency: '一周3次',
-        period: '3个月',
-        content: '测试内容',
-        workPlace: '上海'
-      },
-      {
-        title: '招聘前端开发人员',
-        type: '实习生',
-        position: '前端开发',
-        salaries: '200/天',
-        frequency: '一周3次',
-        period: '3个月',
-        content: '测试内容',
-        workPlace: '上海'
-      },
-      {
-        title: '招聘前端开发人员',
-        type: '实习生',
-        position: '前端开发',
-        salaries: '200/天',
-        frequency: '一周3次',
-        period: '3个月',
-        content: '测试内容',
-        workPlace: '上海'
-      },
-      {
-        title: '招聘前端开发人员',
-        type: '实习生',
-        position: '前端开发',
-        salaries: '200/天',
-        frequency: '一周3次',
-        period: '3个月',
-        content: '测试内容',
-        workPlace: '上海'
-      }]
+      form: []
     }
   },
+  created: function() {
+    this.getJobInfo()
+  },
   methods: {
+    getJobInfo() {
+      getJobInformation().then(response => {
+        this.form = response.data
+        console.log(response.data)
+      })
+    },
+    addJobInfo() {
+      addJobInformation(this.submitform).then(response => {
+        console.log(response.data)
+        location.reload()
+      })
+    },
+    fixJobInfo() {
+      fixJobInformation(this.fixId).then(response => {
+        console.log(response.data)
+      })
+    },
+    deleteJobInfo(id) {
+      deleteJobInformation(id).then(response => {
+        console.log(response.data)
+      })
+    },
     cancelAdd(done) {
       // 按取消按钮后，重置表单内保存的内容
       this.$confirm('取消后，当前数据清空。确认取消? ')
@@ -227,9 +214,9 @@ export default {
     },
     changeItem(e) {
       const f = this.form[e] // 获取改行的数据
-      console.log(e)
       console.log(f)
-
+      this.fixId = e
+      console.log(e)
       const that = this.submitform
       that.title = f.title
       that.type = f.type

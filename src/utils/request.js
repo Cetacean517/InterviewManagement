@@ -3,23 +3,25 @@ import { MessageBox, Message } from 'element-ui'
 import store from '@/store'
 import { getToken } from '@/utils/auth'
 
+// 封装了axios请求的过程
 // create an axios instance
 const service = axios.create({
-  baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
+  baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url 设置基地址
   // withCredentials: true, // send cookies when cross-domain requests
+  // 在.env.development / .env.production里面修改
   timeout: 5000 // request timeout
 })
 
 // request interceptor
 service.interceptors.request.use(
+  // 请求拦截器：在请求之前进行一些配置。比如：携带token的访问
   config => {
     // do something before request is sent
-
     if (store.getters.token) {
       // let each request carry token
       // ['X-Token'] is a custom headers key
       // please modify it according to the actual situation
-      config.headers['X-Token'] = getToken()
+      config.headers['Authorization'] = getToken() // 设置token的headers，并获取token
     }
     return config
   },
@@ -32,6 +34,7 @@ service.interceptors.request.use(
 
 // response interceptor
 service.interceptors.response.use(
+  // 响应拦截器
   /**
    * If you want to get http information such as headers or status
    * Please return  response => response
@@ -43,18 +46,22 @@ service.interceptors.response.use(
    * You can also judge the status by HTTP Status Code
    */
   response => {
-    const res = response.data
+    const code = response.status
+    if (response.status === 200) {
+      return response
+    }
 
-    // if the custom code is not 20000, it is judged as an error.
-    if (res.code !== 20000) {
+    // if the custom code is not 200, it is judged as an error.
+    if (code !== 200) {
       Message({
-        message: res.message || 'Error',
+        message: 'Error',
         type: 'error',
         duration: 5 * 1000
       })
 
+      // 需要修改错误的code 编号
       // 50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;
-      if (res.code === 50008 || res.code === 50012 || res.code === 50014) {
+      if (code === 50008 || code === 50012 || code === 50014) {
         // to re-login
         MessageBox.confirm('You have been logged out, you can cancel to stay on this page, or log in again', 'Confirm logout', {
           confirmButtonText: 'Re-Login',
@@ -66,9 +73,9 @@ service.interceptors.response.use(
           })
         })
       }
-      return Promise.reject(new Error(res.message || 'Error'))
+      return Promise.reject(new Error('Error'))
     } else {
-      return res
+      return response
     }
   },
   error => {
