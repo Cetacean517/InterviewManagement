@@ -3,43 +3,30 @@
     <h1>我的简历</h1>
     <!-- 表单 :rules="rules" -->
     <el-form ref="ruleForm" status-icon label-position="right" :model="ruleForm">
-      <!-- 第一行 姓名、性别、出生年月 -->
-      <div class="form-flex">
+      <!-- 第一行 出生年月 -->
+      <!-- <div class="form-flex1">
+         <el-form-item :label="lablename.birthday" required style="margin-left: 100px">
+          <el-form-item prop="birthday">
+            <el-date-picker v-model="ruleForm.birthday" type="month" placeholder="选择年份" style="width: 100%;margin-left: 100px" value-format="yyyy年MM月dd日" />
+          </el-form-item>
+        </el-form-item>
+      </div> -->
+      <!-- 第二行 姓名邮箱、手机号、出生地 -->
+      <div class="form-flex" style="width:90%">
         <el-form-item :label="lablename.name" prop="name">
           <el-input v-model="ruleForm.name" placeholder="姓名" autocomplete="on" @input="change($event)" />
         </el-form-item>
-        <el-form-item :label="lablename.sex" prop="sex">
-          <el-select v-model="ruleForm.sex" placeholder="请选择您的性别" style="width:185px">
-            <el-option label="女" value="女" />
-            <el-option label="男" value="男" />
-          </el-select>
-        </el-form-item>
-        <el-form-item :label="lablename.birthday" required>
-          <el-form-item prop="birthday">
-            <el-date-picker v-model="ruleForm.birthday" type="month" placeholder="选择年份" style="width: 100%" value-format="yyyy年MM月dd日" />
-          </el-form-item>
-        </el-form-item>
-      </div>
-      <!-- 第二行 邮箱、手机号、出生地 -->
-      <div class="form-flex">
         <el-form-item :label="lablename.email" prop="email">
           <el-input v-model="ruleForm.email" autocomplete="on" placeholder="邮箱" />
         </el-form-item>
         <el-form-item :label="lablename.phone" prop="phone">
           <el-input v-model="ruleForm.phone" autocomplete="on" placeholder="手机号" />
         </el-form-item>
-        <el-form-item :label="lablename.now_location" prop="now_location">
-          <el-input v-model="ruleForm.now_location" autocomplete="on" placeholder="现居地" />
+        <el-form-item :label="lablename.nowLocation" prop="nowLocation">
+          <el-input v-model="ruleForm.nowLocation" autocomplete="on" placeholder="现居地" />
         </el-form-item>
       </div>
-      <!-- 第三行 教育背景 -->
-      <!-- <div class="form-flex">
-        <el-form-item :label="lablename.education">
-          <el-input v-model="ruleForm.education" placeholder="教育背景" />
-        </el-form-item>
-      </div> -->
 
-      <!-- *** 学历学位 感觉 education 改成这个更好？ -->
       <!-- 全日制 -->
       <h3>全日制教育信息</h3>
       <div class="form-flex">
@@ -51,19 +38,6 @@
         </el-form-item>
         <el-form-item label="专业">
           <el-input v-model="fullTimeMajor" placeholder="专业" />
-        </el-form-item>
-      </div>
-      <!-- 在职 -->
-      <h3>在职教育信息</h3>
-      <div class="form-flex">
-        <el-form-item label="在职教育学历">
-          <el-input v-model="jobDegree" placeholder="在职教育学历" />
-        </el-form-item>
-        <el-form-item label="毕业院校">
-          <el-input v-model="jobSchool" placeholder="毕业院校" />
-        </el-form-item>
-        <el-form-item label="专业">
-          <el-input v-model="jobMajor" placeholder="专业" />
         </el-form-item>
       </div>
       <el-alert title="若无该经历，无需填写" type="info" close-text="知道了" />
@@ -85,7 +59,8 @@
 
       <!--提交  -->
       <el-row style="display:flex; justify-content:flex-end;margin-right:100px">
-        <el-button class="buttonline" type="primary" plain @click="submitForm('ruleForm')">提交</el-button>
+        <el-button v-if="isNull" class="buttonline" type="primary" plain @click="submitForm_One('ruleForm')">提交</el-button>
+        <el-button v-if="!isNull" class="buttonline" type="primary" plain @click="submitForm_Two('ruleForm')">提交</el-button>
         <el-button class="buttonline" type="primary" plain @click="resetForm('ruleForm')">重置</el-button>
         <!-- <el-button class="buttonline" type="success" plain @click="$router.push('/entrance/menu')">完成</el-button> -->
       </el-row>
@@ -95,7 +70,7 @@
 </template>
 
 <script>
-// import { getInfoData, sendInfoData } from '@/api/Info'
+import { addResume, getResume, fixResume } from '@/api/employee'
 export default {
   name: 'DoResume',
   data() {
@@ -121,35 +96,28 @@ export default {
       iconFormVisible: false,
       dialogTitle: '增加',
       rowIndex: null,
+      isNull: true,
       userInfo: {},
       // 教育信息（未拼接）
       fullTimeDegree: '',
       fullTimeSchool: '',
       fullTimeMajor: '',
-      jobDegree: '',
-      jobSchool: '',
-      jobMajor: '',
       lablename: { // 设置显示的标签
         name: '姓名',
-        sex: '性别',
-        birthday: '出生年月',
+        // birthday: '出生年月',
         email: '邮箱',
         phone: '手机号',
-        now_location: '现居地',
-        // education: '教育背景',
+        nowLocation: '现居地',
         workExperience: '工作经历',
         schoolExperience: '在校经历',
         jobExperience: '职业经历',
         selfIntroduction: '自我介绍'
       },
       ruleForm: {
-        // imageUrl: '', // 照片
         name: '',
-        sex: '',
-        birthday: null,
         email: '',
         phone: '',
-        now_location: '',
+        nowLocation: '',
         education: '',
         workExperience: '',
         schoolExperience: '',
@@ -162,28 +130,77 @@ export default {
           { required: true, message: '请输入您的姓名', trigger: 'blur' },
           { min: 2, max: 5, message: '长度在 2 到 5 个字符', trigger: 'blur' }
         ],
-        sex: [{ required: true, message: '请选择您的性别', trigger: 'change' }],
-        birthday: [{ required: true, message: '请选择出生年月', trigger: 'change' }],
+        // sex: [{ required: true, message: '请选择您的性别', trigger: 'change' }],
+        // birthday: [{ required: true, message: '请选择出生年月', trigger: 'change' }],
         email: [
           { type: 'string', required: true, message: '请输入邮箱地址', trigger: 'blur' },
           { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }],
         phone: [{ required: true, validator: checkPhone, trigger: 'blur' }],
-        now_location: [{ required: true, message: '请输入您的现居地', trigger: 'blur' }]
+        nowLocation: [{ required: true, message: '请输入您的现居地', trigger: 'blur' }]
       }
     }
   },
   created: function() {
-    // this.getInfo()
+    this.getResume_USR()
   },
   methods: {
-    submitForm(formName) {
+    getResume_USR() {
+      getResume().then(response => {
+        // 更新建立的内容
+        console.log(response.data)
+        this.ruleForm = response.data
+        var eduList = response.data.education.split('-')
+        this.fullTimeDegree = eduList[0]
+        this.fullTimeSchool = eduList[1]
+        this.fullTimeMajor = eduList[2]
+        // 判断是第一次填写，还是新增。
+        // 第一次填写，调用addResume接口 isNull = true
+        // 第二次填写，调用fixResume接口 isNull = false
+        const dataList = Object.values(response.data)
+        this.isNull = true
+        for (var i = 0; i < dataList.length; i++) {
+          if (dataList[i] !== null) {
+            this.isNull = false
+          }
+        }
+      })
+    },
+    submitForm_One(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
           // 1. 先更新简历
           this.ruleForm.education = this.fullTimeDegree + '-' + this.fullTimeSchool + '-' + this.fullTimeMajor
           console.log(this.ruleForm)
-          // sendInfoData(this.ruleForm).then(response => {
-          // }).alert('submit!')
+          addResume(this.ruleForm).then(response => {
+            console.log('Resume submit first done.')
+            console.log(response.data)
+          })
+          // 完成后跳转;
+          console.log(this.$route.params.name)
+          if (!this.$route.params.name) {
+            // 如果直接从侧边栏进入，则跳转到CheckMSG;
+            this.$router.push({ name: 'CheckMSG' })
+          } else {
+            // 如果是从简历投递进入，先投递，后跳转到CheckResume
+            // 需要调投递的接口
+            this.$router.push({ name: 'CheckResume', params: { name: '我要投递' }})
+          }
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
+    },
+    submitForm_Two(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          // 1. 先更新简历
+          this.ruleForm.education = this.fullTimeDegree + '-' + this.fullTimeSchool + '-' + this.fullTimeMajor
+          console.log(this.ruleForm)
+          fixResume(this.ruleForm).then(response => {
+            console.log('Resume submit second done.')
+            console.log(response.data)
+          })
           // 完成后跳转;
           console.log(this.$route.params.name)
           if (!this.$route.params.name) {
@@ -202,6 +219,9 @@ export default {
     },
     resetForm(formName) {
       this.$refs[formName].resetFields()
+      this.fullTimeDegree = ''
+      this.fullTimeSchool = ''
+      this.fullTimeMajor = ''
     },
     change(e) {
       this.$forceUpdate()
@@ -258,5 +278,10 @@ export default {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+}
+.form-flex1 {
+  width:70%;
+  display: flex;
+  flex-direction: row;
 }
 </style>

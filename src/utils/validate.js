@@ -15,6 +15,6 @@ export function isExternal(path) {
  * @returns {Boolean}
  */
 export function validUsername(str) {
-  const valid_map = ['admin', 'editor', '3q'] // 权限的表格
+  const valid_map = ['ROLE_EMPLOYER', 'ROLE_EMPLOYEE'] // 权限的表格
   return valid_map.indexOf(str.trim()) >= 0 // 判断是否有权限
 }

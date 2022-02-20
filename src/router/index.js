@@ -50,7 +50,7 @@ export const constantRoutes = [
       path: 'curdHR', // url中字地址的名称
       name: 'CurdHR',
       component: () => import('@/views/hr/curd_hr/index'),
-      meta: { title: '发布招聘信息', icon: 'dashboard' }
+      meta: { title: '发布招聘信息', icon: 'dashboard', roles: 'ROLE_EMPLOYER' }
     }]
   },
   // HR 和 User公用的路由部分
@@ -121,7 +121,7 @@ export const constantRoutes = [
 ]
 
 const createRouter = () => new Router({
-  // mode: 'history', // require service support
+  mode: 'history', // require service support
   scrollBehavior: () => ({ y: 0 }),
   routes: constantRoutes
 })

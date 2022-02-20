@@ -1,4 +1,4 @@
-import { login, logout, getInfo } from '@/api/user'
+import { login, getInfo } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { resetRouter } from '@/router'
 
@@ -26,6 +26,9 @@ const mutations = {
   },
   SET_AVATAR: (state, avatar) => {
     state.avatar = avatar
+  },
+  SET_ROLE: (state, role) => {
+    state.role = role
   }
 }
 
@@ -64,7 +67,7 @@ const actions = {
         const { username, role } = data
 
         commit('SET_NAME', username)
-        commit('SET_AVATAR', role)
+        commit('SET_ROLE', role)
         resolve(data) // 注释改行可以让页面停留在登录页
       }).catch(error => {
         reject(error)
@@ -73,17 +76,14 @@ const actions = {
   },
 
   // user logout
-  logout({ commit, state }) {
-    return new Promise((resolve, reject) => {
-      logout(state.token).then(() => {
-        removeToken() // must remove  token  first
-        resetRouter()
-        commit('RESET_STATE')
-        resolve()
-      }).catch(error => {
-        reject(error)
-      })
-    })
+  logout({ commit }) {
+    commit('SET_TOKEN', '')
+    commit('SET_ROLE', [])
+    removeToken()
+    resetRouter()
+    // 路由跳转好像总是匹配不到主页面
+    // location.href = `http://127.0.0.1:8080/?redirect=${encodeURIComponent(window.APP_CONFIG.logoutRedirect)}`
+    // location.href = `http://127.0.0.1:8080/login?redirect=${encodeURIComponent('/')}`
   },
 
   // remove token

@@ -40,46 +40,7 @@ export default {
         content: '',
         workPlace: ''
       },
-      form: [{ // 从后端获取的数据放在这里
-        title: '招聘前端开发人员',
-        type: '实习生',
-        position: '前端开发',
-        salaries: '200/天',
-        frequency: '一周3次',
-        period: '3个月',
-        content: '测试内容',
-        workPlace: '上海'
-      },
-      {
-        title: '招聘前端开发人员',
-        type: '实习生',
-        position: '前端开发',
-        salaries: '200/天',
-        frequency: '一周3次',
-        period: '3个月',
-        content: '测试内容',
-        workPlace: '上海'
-      },
-      {
-        title: '招聘前端开发人员',
-        type: '实习生',
-        position: '前端开发',
-        salaries: '200/天',
-        frequency: '一周3次',
-        period: '3个月',
-        content: '测试内容',
-        workPlace: '上海'
-      },
-      {
-        title: '招聘前端开发人员',
-        type: '实习生',
-        position: '前端开发',
-        salaries: '200/天',
-        frequency: '一周3次',
-        period: '3个月',
-        content: '测试内容',
-        workPlace: '上海'
-      }]
+      form: []
     }
   }
 }

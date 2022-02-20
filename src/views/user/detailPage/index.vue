@@ -74,11 +74,14 @@
 </template>
 
 <script>
+import { getJobInformation } from '@/api/hr'
+import { getJobInformation_USR } from '@/api/employee'
 export default {
   name: 'DetailPage',
   data() {
     return {
       buttonName: '',
+      id: '', // 查看的招聘信息的编号
       lablename: { // 设置显示的标签
         title: '标题',
         type: '招聘类型',
@@ -105,10 +108,30 @@ export default {
     // 在Html页面出现之前渲染
     // 测试网页之间的变量传递
     this.buttonName = this.$route.params.name
-    console.log(this.$route.params)
-    console.log(this.buttonName)
+    this.id = this.$route.params.id
+  },
+  mounted: function() {
+    if (this.buttonName === '我要查看') {
+      this.getJobInfo_HR()
+    } else {
+      this.getJobInfo_USER()
+    }
   },
   methods: {
+    getJobInfo_HR() {
+      getJobInformation().then(response => {
+        console.log(this.id)
+        this.submitform = response.data[this.id]
+        this.submitform.title = '招聘' + this.submitform.position
+      })
+    },
+    getJobInfo_USER() {
+      getJobInformation_USR().then(response => {
+        console.log(this.id)
+        this.submitform = response.data[this.id]
+        this.submitform.title = '招聘' + this.submitform.position
+      })
+    },
     todoLink() {
       if (this.buttonName === '我要查看') {
         this.$router.push({ name: 'ResumeBrief', params: { name: '我要查看' }})

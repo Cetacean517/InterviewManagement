@@ -30,3 +30,4 @@ export function register(data) {
     data
   })
 }
+
