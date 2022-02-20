@@ -60,7 +60,8 @@
       <!--提交  -->
       <el-row style="display:flex; justify-content:flex-end;margin-right:100px">
         <el-button v-if="isNull" class="buttonline" type="primary" plain @click="submitForm_One('ruleForm')">提交</el-button>
-        <el-button v-if="!isNull" class="buttonline" type="primary" plain @click="submitForm_Two('ruleForm')">提交</el-button>
+        <el-button v-if="isSecond" class="buttonline" type="primary" plain @click="submitForm_Two('ruleForm')">修改</el-button>
+        <el-button v-if="isSend" class="buttonline" type="primary" plain @click="sendForm('ruleForm')">投递</el-button>
         <el-button class="buttonline" type="primary" plain @click="resetForm('ruleForm')">重置</el-button>
         <!-- <el-button class="buttonline" type="success" plain @click="$router.push('/entrance/menu')">完成</el-button> -->
       </el-row>
@@ -70,7 +71,7 @@
 </template>
 
 <script>
-import { addResume, getResume, fixResume } from '@/api/employee'
+import { addResume, getResume, fixResume, postResume } from '@/api/employee'
 export default {
   name: 'DoResume',
   data() {
@@ -96,8 +97,11 @@ export default {
       iconFormVisible: false,
       dialogTitle: '增加',
       rowIndex: null,
+      isSend: false,
       isNull: true,
+      isSecond: false,
       userInfo: {},
+      id: '', // 投递简历的id
       // 教育信息（未拼接）
       fullTimeDegree: '',
       fullTimeSchool: '',
@@ -142,6 +146,11 @@ export default {
   },
   created: function() {
     this.getResume_USR()
+    this.id = this.$route.params.id
+    console.log(this.id)
+    if (this.$route.params.name) {
+      this.isSend = true
+    }
   },
   methods: {
     getResume_USR() {
@@ -161,7 +170,12 @@ export default {
         for (var i = 0; i < dataList.length; i++) {
           if (dataList[i] !== null) {
             this.isNull = false
+            this.isSecond = true
           }
+        }
+        if (this.isSend) {
+          this.isNull = false
+          this.isSecond = false
         }
       })
     },
@@ -198,6 +212,32 @@ export default {
           this.ruleForm.education = this.fullTimeDegree + '-' + this.fullTimeSchool + '-' + this.fullTimeMajor
           console.log(this.ruleForm)
           fixResume(this.ruleForm).then(response => {
+            console.log('Resume submit second done.')
+            console.log(response.data)
+          })
+          // 完成后跳转;
+          console.log(this.$route.params.name)
+          if (!this.$route.params.name) {
+            // 如果直接从侧边栏进入，则跳转到CheckMSG;
+            this.$router.push({ name: 'CheckMSG' })
+          } else {
+            // 如果是从简历投递进入，先投递，后跳转到CheckResume
+            // 需要调投递的接口
+            this.$router.push({ name: 'CheckResume', params: { name: '我要投递' }})
+          }
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
+    },
+    sendForm(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          // 1. 先更新简历
+          this.ruleForm.education = this.fullTimeDegree + '-' + this.fullTimeSchool + '-' + this.fullTimeMajor
+          console.log(this.ruleForm)
+          postResume(this.id,this.ruleForm).then(response => {
             console.log('Resume submit second done.')
             console.log(response.data)
           })

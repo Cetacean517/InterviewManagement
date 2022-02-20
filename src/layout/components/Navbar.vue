@@ -50,6 +50,7 @@ export default {
     logout() {
       this.$store.dispatch('user/logout').then(() =>
         console.log('done'))
+      location.reload()
     }
   }
 }

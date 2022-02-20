@@ -134,9 +134,9 @@ export default {
     },
     todoLink() {
       if (this.buttonName === '我要查看') {
-        this.$router.push({ name: 'ResumeBrief', params: { name: '我要查看' }})
+        this.$router.push({ name: 'ResumeBrief', params: { name: '我要查看', id: this.id }})
       } else if (this.buttonName === '我要投递') {
-        this.$router.push({ name: 'DoResume', params: { name: '我要投递' }})
+        this.$router.push({ name: 'DoResume', params: { name: '我要投递', id: this.id }})
       }
     }
   }

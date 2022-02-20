@@ -1,9 +1,9 @@
 ﻿import request from '@/utils/request'
 
 // 投递简历
-export function postResume(data, token) {
+export function postResume(id, data, token) {
   return request({
-    url: '/api/employee/cvoffer',
+    url: '/api/employee/cvoffer/' + id,
     method: 'post',
     data,
     params: { token }
