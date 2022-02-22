@@ -66,7 +66,7 @@ const actions = {
 
         const { username, role } = data
 
-        commit('SET_NAME', username)
+        commit('SET_NAME', username) // commit触发state中的方法,(方法名，参数)
         commit('SET_ROLE', role)
         resolve(data) // 注释改行可以让页面停留在登录页
       }).catch(error => {

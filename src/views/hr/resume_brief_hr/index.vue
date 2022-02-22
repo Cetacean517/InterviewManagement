@@ -2,13 +2,21 @@
   <div class="container">
     <!-- 循环展示 -->
     <div v-for="(item,i) in form" :key="i" class="resume">
-      <el-descriptions :title="item.title">
-        <el-descriptions-item :label="lablename.name">{{ item.name }}</el-descriptions-item>
-        <el-descriptions-item :label="lablename.now_location">{{ item.now_location }}</el-descriptions-item>
-        <template slot="extra">
-          <el-button>查看</el-button>
-        </template>
-      </el-descriptions>
+      <el-card class="resume_brief" shadow="hover" style="margin:'20rpx'">
+        <el-descriptions>
+          <template slot="title">
+            <h3>简历{{ i+1 }}</h3>
+          </template>
+          <el-descriptions-item :label="lablename.name">{{ item.name }}</el-descriptions-item>
+          <el-descriptions-item :label="lablename.now_location">{{ item.now_location }}</el-descriptions-item>
+          <el-descriptions-item :label="lablename.phone">{{ item.phone }}</el-descriptions-item>
+          <el-descriptions-item :label="lablename.email">{{ item.email }}</el-descriptions-item>
+          <el-descriptions-item :label="lablename.education">{{ item.education }}</el-descriptions-item>
+          <template slot="extra">
+            <el-button type="primary" size="medium" @click="todoLink">查看</el-button>
+          </template>
+        </el-descriptions>
+      </el-card>
     </div>
   </div>
 </template>
@@ -52,6 +60,9 @@ export default {
       for (let i = 0; i < 100; i++) {
         this.form.push(demoResume)
       }
+    },
+    todoLink() {
+      this.$router.push({ name: 'UserResume' })
     }
   }
 }
@@ -62,6 +73,24 @@ export default {
         // 待完善
     }
 }
-<style>
+
+<style lang="scss" scoped>
+
+  .container{
+    margin:90px 80px 20px 80px;
+  }
+
+  .resume{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40rpx;
+    margin: 10px;
+  }
+
+  .el-card{
+    width: 85%;
+    padding: 50rpx;
+  }
 
 </style>

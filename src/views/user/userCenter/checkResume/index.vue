@@ -81,6 +81,13 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
+  .container{
+    margin:90px 80px 20px 80px;
+  }
 
+  .state{
+    width: 95%;
+    margin: 20px 50px 50px 25px;
+  }
 </style>

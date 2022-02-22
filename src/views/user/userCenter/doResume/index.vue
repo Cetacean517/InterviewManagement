@@ -237,7 +237,7 @@ export default {
           // 1. 先更新简历
           this.ruleForm.education = this.fullTimeDegree + '-' + this.fullTimeSchool + '-' + this.fullTimeMajor
           console.log(this.ruleForm)
-          postResume(this.id,this.ruleForm).then(response => {
+          postResume(this.id, this.ruleForm).then(response => {
             console.log('Resume submit second done.')
             console.log(response.data)
           })

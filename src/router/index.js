@@ -71,6 +71,12 @@ export const constantRoutes = [
       hidden: true, // 用户查看招聘信息详细页，不能从侧边栏导航进入
       component: () => import('@/views/hr/resume_brief_hr/index'),
       meta: { title: '查看简历概要', icon: 'el-icon-s-help' }
+    }, {
+      path: 'userResume',
+      name: 'UserResume',
+      hidden: true, // 用户查看招聘信息详细页，不能从侧边栏导航进入
+      component: () => import('@/views/hr/userResume_hr/index'),
+      meta: { title: '应聘者简历详情', icon: 'el-icon-s-help' }
     }]
   },
   {
@@ -122,7 +128,7 @@ export const constantRoutes = [
 
 const createRouter = () => new Router({
   mode: 'history', // require service support
-  base: window.APP_CONFIG.routeBase,
+  // base: window.APP_CONFIG.routeBase,
   scrollBehavior: () => ({ y: 0 }),
   routes: constantRoutes
 })
