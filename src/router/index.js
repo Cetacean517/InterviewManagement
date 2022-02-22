@@ -122,6 +122,7 @@ export const constantRoutes = [
 
 const createRouter = () => new Router({
   mode: 'history', // require service support
+  base: window.APP_CONFIG.routeBase,
   scrollBehavior: () => ({ y: 0 }),
   routes: constantRoutes
 })

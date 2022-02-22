@@ -20,6 +20,7 @@
 </template>
 
 <script>
+// import { getJobInformation_USR } from '@/api/employee'
 export default {
   data() {
     return {
