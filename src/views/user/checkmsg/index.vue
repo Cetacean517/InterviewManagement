@@ -17,7 +17,7 @@
           <el-descriptions-item :label="lablename.frequency">{{ item.frequency }}</el-descriptions-item>
           <el-descriptions-item :label="lablename.period">{{ item.period }}</el-descriptions-item>
           <template slot="extra">
-            <el-button type="primary" size="small" @click="changeVisible = true; gotoLink()">查看</el-button>
+            <el-button type="primary" size="small" @click="changeVisible = true; gotoLink(i)">查看</el-button>
           </template>
         </el-descriptions>
       </el-card>
@@ -26,6 +26,7 @@
 </template>
 
 <script>
+import { getJobInformation_USR } from '@/api/employee'
 
 export default {
   name: 'HRmModule',
@@ -53,51 +54,20 @@ export default {
         content: '',
         workPlace: ''
       },
-      form: [{ // 从后端获取的数据放在这里
-        title: '招聘前端开发人员',
-        type: '实习生',
-        position: '前端开发',
-        salaries: '200/天',
-        frequency: '一周3次',
-        period: '3个月',
-        content: '测试内容',
-        workPlace: '上海'
-      },
-      {
-        title: '招聘前端开发人员',
-        type: '实习生',
-        position: '前端开发',
-        salaries: '200/天',
-        frequency: '一周3次',
-        period: '3个月',
-        content: '测试内容',
-        workPlace: '上海'
-      },
-      {
-        title: '招聘前端开发人员',
-        type: '实习生',
-        position: '前端开发',
-        salaries: '200/天',
-        frequency: '一周3次',
-        period: '3个月',
-        content: '测试内容',
-        workPlace: '上海'
-      },
-      {
-        title: '招聘前端开发人员',
-        type: '实习生',
-        position: '前端开发',
-        salaries: '200/天',
-        frequency: '一周3次',
-        period: '3个月',
-        content: '测试内容',
-        workPlace: '上海'
-      }]
+      form: []
     }
   },
+  created: function() {
+    this.getJobInfo()
+  },
   methods: {
-    gotoLink() {
-      this.$router.push({ name: 'DetailPage', params: { name: '我要投递' }})
+    getJobInfo() {
+      getJobInformation_USR().then(response => {
+        this.form = response.data
+      })
+    },
+    gotoLink(row) {
+      this.$router.push({ name: 'DetailPage', params: { name: '我要投递', id: row }})
       console.log(this.$route.params)
     }
   }

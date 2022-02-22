@@ -12,7 +12,7 @@
           <el-descriptions-item :label="lablename.frequency">{{ item.frequency }}</el-descriptions-item>
           <el-descriptions-item :label="lablename.period">{{ item.period }}</el-descriptions-item>
           <template slot="extra">
-            <el-button type="primary" size="small" @click="changeVisible = true; gotoLink()">查看</el-button>
+            <el-button type="primary" size="small" @click="changeVisible = true; gotoLink(i)">查看</el-button>
           </template>
         </el-descriptions>
       </el-card>
@@ -21,7 +21,7 @@
   </div></template>
 
 <script>
-
+import { getJobInformation } from '@/api/hr'
 export default {
   name: 'GetMsg',
   data() {
@@ -48,53 +48,24 @@ export default {
         content: '',
         workPlace: ''
       },
-      form: [{ // 从后端获取的数据放在这里
-        title: '招聘前端开发人员',
-        type: '实习生',
-        position: '前端开发',
-        salaries: '200/天',
-        frequency: '一周3次',
-        period: '3个月',
-        content: '测试内容',
-        workPlace: '上海'
-      },
-      {
-        title: '招聘前端开发人员',
-        type: '实习生',
-        position: '前端开发',
-        salaries: '200/天',
-        frequency: '一周3次',
-        period: '3个月',
-        content: '测试内容',
-        workPlace: '上海'
-      },
-      {
-        title: '招聘前端开发人员',
-        type: '实习生',
-        position: '前端开发',
-        salaries: '200/天',
-        frequency: '一周3次',
-        period: '3个月',
-        content: '测试内容',
-        workPlace: '上海'
-      },
-      {
-        title: '招聘前端开发人员',
-        type: '实习生',
-        position: '前端开发',
-        salaries: '200/天',
-        frequency: '一周3次',
-        period: '3个月',
-        content: '测试内容',
-        workPlace: '上海'
-      }]
+      form: []
     }
   },
+  created: function() {
+    this.getJobInfo()
+  },
   methods: {
-    gotoLink() {
+    getJobInfo() {
+      getJobInformation().then(response => {
+        this.form = response.data
+        console.log(response.data)
+      })
+    },
+    gotoLink(row) {
       // this.$route.params.name = this.buttonName // 从本页跳转到详情页，显示的是“我要查看”
       // this.$router.replace('/User/detailPage')
-      this.$router.push({ name: 'DetailPage', params: { name: '我要查看' }})
+      this.$router.push({
+        name: 'DetailPage', params: { name: '我要查看', id: row }})
     }
   }
 }
