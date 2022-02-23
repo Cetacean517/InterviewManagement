@@ -105,13 +105,13 @@ export default {
       })
     },
     Pass() {
-      const pass = { status: 1 }
+      const pass = { status: true }
       passResume(this.form.id, pass).then(response => {
         console.log('简历投递成功')
       })
     },
     Fail() {
-      const fail = { status: 0 }
+      const fail = { status: false }
       passResume(this.form.id, fail).then(response => {
       })
     }
