@@ -58,12 +58,10 @@ export default {
     getJobInfo() {
       getJobInformation().then(response => {
         this.form = response.data
-        console.log(response.data)
       })
     },
     gotoLink(row) {
-      // this.$route.params.name = this.buttonName // 从本页跳转到详情页，显示的是“我要查看”
-      // this.$router.replace('/User/detailPage')
+      // 传递的是这个列表中的第几行，后面调取具体内容，是调取所有的接口，然后再取第row项
       this.$router.push({
         name: 'DetailPage', params: { name: '我要查看', id: row }})
     }

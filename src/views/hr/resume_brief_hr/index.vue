@@ -13,7 +13,7 @@
           <el-descriptions-item :label="lablename.email">{{ item.email }}</el-descriptions-item>
           <el-descriptions-item :label="lablename.education">{{ item.education }}</el-descriptions-item>
           <template slot="extra">
-            <el-button type="primary" size="medium" @click="todoLink">查看</el-button>
+            <el-button type="primary" size="medium" @click="todoLink(i)">查看</el-button>
           </template>
         </el-descriptions>
       </el-card>
@@ -22,9 +22,11 @@
 </template>
 
 <script>
+import { getAllResume } from '@/api/hr'
 export default {
   data() {
     return {
+      id: '',
       lablename: { // 设置显示的标签
         'name': '姓名',
         'email': '邮箱',
@@ -40,29 +42,18 @@ export default {
     }
   },
   created: function() {
-    this.init() // 生成简历的模拟信息
-    console.log(this.form)
+    this.id = this.$route.params.id
+    this.getAll()
   },
   methods: {
-    init() {
-      var demoResume = {}
-      demoResume = {
-        'name': '马不世面',
-        'email': 'e.nowuclti@qq.com',
-        'phone': '18687242622',
-        'now_location': 'pariatur officia est dolor anim',
-        'education': 'id ipsum cupidatat dolore',
-        'workExperience': 'labore eu et ea',
-        'schoolExperience': 'eiusmod sunt consequat',
-        'jobExperience': 'labore laboris Duis Excepteur sunt',
-        'selfIntroduction': 'occaecat in fugiat officia'
-      }
-      for (let i = 0; i < 100; i++) {
-        this.form.push(demoResume)
-      }
+    getAll() {
+      getAllResume(this.id).then(response => {
+        console.log(response.data)
+        this.form = response.data
+      })
     },
-    todoLink() {
-      this.$router.push({ name: 'UserResume' })
+    todoLink(i) {
+      this.$router.push({ name: 'UserResume', params: { id: this.id, row: i }})
     }
   }
 }

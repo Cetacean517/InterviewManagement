@@ -82,6 +82,7 @@ export default {
     return {
       shwButton: true,
       buttonName: '',
+      index: '',
       id: '', // 查看的招聘信息的编号
       lablename: { // 设置显示的标签
         title: '标题',
@@ -122,23 +123,24 @@ export default {
   methods: {
     getJobInfo_HR() {
       getJobInformation().then(response => {
-        console.log(this.id)
+        this.index = response.data[this.id].id
         this.submitform = response.data[this.id]
         this.submitform.title = '招聘' + this.submitform.position
       })
     },
     getJobInfo_USER() {
       getJobInformation_USR().then(response => {
-        console.log(this.id)
+        this.index = response.data[this.id].id
         this.submitform = response.data[this.id]
         this.submitform.title = '招聘' + this.submitform.position
       })
     },
     todoLink() {
+      console.log(this.index)
       if (this.buttonName === '我要查看') {
-        this.$router.push({ name: 'ResumeBrief', params: { name: '我要查看', id: this.id }})
+        this.$router.push({ name: 'ResumeBrief', params: { name: '我要查看', id: this.index }})
       } else if (this.buttonName === '我要投递') {
-        this.$router.push({ name: 'DoResume', params: { name: '我要投递', id: this.id }})
+        this.$router.push({ name: 'DoResume', params: { name: '我要投递', id: this.index }})
       }
     }
   }

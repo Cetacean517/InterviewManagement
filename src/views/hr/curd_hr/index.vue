@@ -40,9 +40,6 @@
       :before-close="handleClose"
     >
       <el-form :model="submitform">
-        <el-form-item :label="lablename.title" :label-width="formLabelWidth">
-          <el-input v-model="submitform.title" autocomplete="off" />
-        </el-form-item>
         <el-form-item :label="lablename.type" :label-width="formLabelWidth">
           <el-select v-model="submitform.type" placeholder="请选择招聘岗位类型">
             <el-option label="实习生" value="intern" />
@@ -60,13 +57,7 @@
         </el-form-item>
         <!-- 需要对频率设置选择框和数字类型填写框 -->
         <el-form-item :label="lablename.frequency" :label-width="formLabelWidth">
-          <el-input v-model="submitform.frequency" type="number" autocomplete="off" />
-          <!-- <el-select v-model="submitform.frequency" placeholder="天">
-                <el-option label="天" value="day" />
-                <el-option label="月" value="month" />
-                <el-option label="年" value="year" />
-              </el-select>
-              <el-input v-model="submitform.frequency" type="number" autocomplete="off" />次 -->
+          <el-input v-model="submitform.frequency" type="number" autocomplete="off" />天
         </el-form-item>
         <el-form-item :label="lablename.period" :label-width="formLabelWidth">
           <el-input v-model="submitform.period" autocomplete="off" />
@@ -90,9 +81,6 @@
       :before-close="handleClose"
     >
       <el-form :model="submitform">
-        <el-form-item :label="lablename.title" :label-width="formLabelWidth">
-          <el-input v-model="submitform.title" autocomplete="off" />
-        </el-form-item>
         <el-form-item :label="lablename.type" :label-width="formLabelWidth">
           <el-select v-model="submitform.type" placeholder="请选择招聘岗位类型">
             <el-option label="实习生" value="intern" />
@@ -147,7 +135,6 @@ export default {
       addVisible: false, // 用于设置对话框的可见性（新增）
       changeVisible: false, // （修改）
       submitform: { // 用于提交的表单；新增直接添加数据，保存内容写在里面；修改，先把数组中的内容填入，再修改
-        title: '',
         type: '',
         position: '',
         salaries: '',
@@ -166,23 +153,20 @@ export default {
     getJobInfo() {
       getJobInformation().then(response => {
         this.form = response.data
-        console.log(response.data)
       })
     },
     addJobInfo() {
       addJobInformation(this.submitform).then(response => {
-        console.log(response.data)
-        location.reload()
+        this.getJobInfo()
       })
     },
     fixJobInfo() {
-      fixJobInformation(this.fixId).then(response => {
-        console.log(response.data)
+      fixJobInformation(this.fixId, this.submitform).then(response => {
       })
     },
-    deleteJobInfo(id) {
-      deleteJobInformation(id).then(response => {
-        console.log(response.data)
+    deleteJobInfo(i) {
+      deleteJobInformation(this.form[i].id).then(response => {
+        this.getJobInfo()
       })
     },
     cancelAdd(done) {
@@ -214,11 +198,8 @@ export default {
     },
     changeItem(e) {
       const f = this.form[e] // 获取改行的数据
-      console.log(f)
-      this.fixId = e
-      console.log(e)
+      this.fixId = f.id
       const that = this.submitform
-      that.title = f.title
       that.type = f.type
       that.position = f.position
       that.salaries = f.salaries

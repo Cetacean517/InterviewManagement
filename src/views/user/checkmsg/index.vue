@@ -64,6 +64,7 @@ export default {
     getJobInfo() {
       getJobInformation_USR().then(response => {
         this.form = response.data
+        console.log(response.data)
       })
     },
     gotoLink(row) {
