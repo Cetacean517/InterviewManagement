@@ -66,7 +66,7 @@
       </el-row>
       <el-row>
         <el-col :span="5" :offset="19">
-          <el-button class="font" type="warning" size="large" round style="padding:1.5rem 4rem; border-radius: 30px; margin-top:4rem" @click="todoLink">{{ buttonName }}</el-button>
+          <el-button v-if="shwButton" class="font" type="warning" size="large" round style="padding:1.5rem 4rem; border-radius: 30px; margin-top:4rem" @click="todoLink">{{ buttonName }}</el-button>
         </el-col>
       </el-row>
     </el-card>
@@ -80,6 +80,7 @@ export default {
   name: 'DetailPage',
   data() {
     return {
+      shwButton: true,
       buttonName: '',
       id: '', // 查看的招聘信息的编号
       lablename: { // 设置显示的标签
@@ -108,6 +109,7 @@ export default {
     // 在Html页面出现之前渲染
     // 测试网页之间的变量传递
     this.buttonName = this.$route.params.name
+    if (typeof this.buttonName === 'undefined') this.shwButton = false
     this.id = this.$route.params.id
   },
   mounted: function() {

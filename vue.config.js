@@ -35,7 +35,17 @@ module.exports = {
     overlay: {
       warnings: false,
       errors: true
+    },
+    proxy: {
+      '/proxy': {
+        target: 'http://',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/proxy': ''
+        }
+      }
     }
+
     // before: require('./mock/mock-server.js')
   },
   configureWebpack: {

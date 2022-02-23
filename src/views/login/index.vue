@@ -167,7 +167,10 @@ export default {
           this.loading = true
           this.$store.dispatch('user/login', this.loginForm).then(() => {
             // this.$store.dispatch的方法触发store中action（更新但是异步）的异步分法
-            this.$router.push({ path: this.redirect || '/' })
+            if (this.$store.getters.roles.indexOf('ROLE_EMPLOYER')) { this.$router.push({ path: this.redirect || '/' }) } else {
+              console.log(this.$router)
+              this.$router.push({ path: '/User/checkMSG' })
+            }
             this.loading = false
           }).catch(() => {
             this.loading = false

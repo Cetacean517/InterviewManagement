@@ -8,7 +8,7 @@
       </app-link>
     </template>
 
-    <el-submenu v-else ref="subMenu" :index="resolvePath(item.path)" popper-append-to-body>
+    <el-submenu v-else ref="subMenu" :index="resolvePath(item.path)" popper-append-to-body @click="checkRole(item.children)">
       <template slot="title">
         <item v-if="item.meta" :icon="item.meta && item.meta.icon" :title="item.meta.title" />
       </template>
@@ -80,6 +80,9 @@ export default {
       }
 
       return false
+    },
+    checkRole(data) {
+      console.log(data)
     },
     resolvePath(routePath) {
       if (isExternal(routePath)) {

@@ -13,6 +13,7 @@
         mode="vertical"
       >
         <sidebar-item v-for="route in routes" :key="route.path" :item="route" :base-path="route.path" />
+
       </el-menu>
     </el-scrollbar>
   </div>
@@ -26,6 +27,11 @@ import variables from '@/styles/variables.scss'
 
 export default {
   components: { SidebarItem, Logo },
+  data() {
+    return {
+      isEmployer: true
+    }
+  },
   computed: {
     ...mapGetters([
       'sidebar'
@@ -51,6 +57,9 @@ export default {
     isCollapse() {
       return !this.sidebar.opened
     }
+  },
+  mounted: function() {
+    console.log(this.$router)
   }
 }
 </script>

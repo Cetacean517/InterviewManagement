@@ -6,7 +6,7 @@ const getDefaultState = () => {
   return {
     token: getToken(), // token
     name: '', // 用户名
-    avatar: '' // 权限
+    roles: []
   }
 }
 
@@ -24,11 +24,8 @@ const mutations = {
   SET_NAME: (state, name) => {
     state.name = name
   },
-  SET_AVATAR: (state, avatar) => {
-    state.avatar = avatar
-  },
-  SET_ROLE: (state, role) => {
-    state.role = role
+  SET_ROLE: (state, roles) => {
+    state.roles = roles
   }
 }
 
@@ -58,16 +55,15 @@ const actions = {
     return new Promise((resolve, reject) => {
       getInfo(state.token).then(response => {
         const { data } = response
-        console.log(response)
-
         if (!data) {
           return reject('Verification failed, please Login again.')
         }
-
-        const { username, role } = data
+        const { username } = data
+        const roleslist = []
+        roleslist.push(response.data.role)
 
         commit('SET_NAME', username) // commit触发state中的方法,(方法名，参数)
-        commit('SET_ROLE', role)
+        commit('SET_ROLE', roleslist)
         resolve(data) // 注释改行可以让页面停留在登录页
       }).catch(error => {
         reject(error)

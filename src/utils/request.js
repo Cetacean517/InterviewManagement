@@ -6,7 +6,7 @@ import { getToken } from '@/utils/auth'
 // 封装了axios请求的过程
 // create an axios instance
 const service = axios.create({
-  baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url 设置基地址
+  baseURL: window.APP_CONFIG.baseApi, // url = base url + request url 设置基地址
   // withCredentials: true, // send cookies when cross-domain requests
   // 在.env.development / .env.production里面修改
   timeout: 5000 // request timeout
@@ -53,26 +53,7 @@ service.interceptors.response.use(
 
     // if the custom code is not 200, it is judged as an error.
     if (code !== 200) {
-      Message({
-        message: 'Error',
-        type: 'error',
-        duration: 5 * 1000
-      })
-
-      // 需要修改错误的code 编号
-      // 50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;
-      if (code === 50008 || code === 50012 || code === 50014) {
-        // to re-login
-        MessageBox.confirm('You have been logged out, you can cancel to stay on this page, or log in again', 'Confirm logout', {
-          confirmButtonText: 'Re-Login',
-          cancelButtonText: 'Cancel',
-          type: 'warning'
-        }).then(() => {
-          store.dispatch('user/resetToken').then(() => {
-            location.reload()
-          })
-        })
-      }
+      console.log(response)
       return Promise.reject(new Error('Error'))
     } else {
       return response
@@ -80,11 +61,11 @@ service.interceptors.response.use(
   },
   error => {
     console.log('err' + error) // for debug
-    Message({
-      message: error.message,
-      type: 'error',
-      duration: 5 * 1000
-    })
+    // Message({
+    //   message: error.message,
+    //   type: 'error',
+    //   duration: 5 * 1000
+    // })
     return Promise.reject(error)
   }
 )

@@ -20,7 +20,7 @@
 </template>
 
 <script>
-// import { getJobInformation_USR } from '@/api/employee'
+import { getAllSend } from '@/api/employee'
 export default {
   data() {
     return {
@@ -47,34 +47,14 @@ export default {
     }
   },
   created: function() {
-    this.init()
+    this.getAll()
   },
   methods: {
-    init() {
-      var demoResume = {}
-      demoResume = {
-        'name': '马不世面',
-        'email': 'e.nowuclti@qq.com',
-        'phone': '18687242622',
-        'now_location': 'pariatur officia est dolor anim',
-        'education': 'id ipsum cupidatat dolore',
-        'workExperience': 'labore eu et ea',
-        'schoolExperience': 'eiusmod sunt consequat',
-        'jobExperience': 'labore laboris Duis Excepteur sunt',
-        'selfIntroduction': 'occaecat in fugiat officia',
-        title: '招聘前端开发人员',
-        type: '实习生',
-        position: '前端开发',
-        salaries: '200/天',
-        frequency: '一周3次',
-        period: '3个月',
-        content: '测试内容',
-        workPlace: '上海',
-        state: '通过'
-      }
-      for (let i = 0; i < 10; i++) {
-        this.form.push(demoResume)
-      }
+    getAll() {
+      getAllSend().then(response => {
+        // this.form = response.data
+        console.log(response.data)
+      })
     }
   }
 
