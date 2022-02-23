@@ -56,8 +56,10 @@
       </el-descriptions>
     </div>
     <div style="margin-top:20px; display: flex;justify-content: flex-end">
-      <el-button type="primary" size="large" @click="Pass">通过</el-button>
-      <el-button type="alarm" size="large" @click="Fail">不通过</el-button>
+      <el-button v-if="form.status === 0" type="primary" size="large" @click="Pass">通过</el-button>
+      <el-button v-if="form.status === 0" type="alarm" size="large" @click="Fail">不通过</el-button>
+      <el-tag v-if="form.status === 1">通过</el-tag>
+      <el-tag v-if="form.status === 2">不通过</el-tag>
     </div>
   </div>
 </template>
@@ -102,6 +104,7 @@ export default {
         this.fullTimeDegree = eduList[0]
         this.fullTimeSchool = eduList[1]
         this.fullTimeMajor = eduList[2]
+        console.log(this.form)
       })
     },
     Pass() {
