@@ -40,11 +40,6 @@ export const constantRoutes = [
     path: '/Magic',
     component: () => import('@/views/Magic/index'),
     hidden: true
-  },
-  {
-    path: '/404',
-    component: () => import('@/views/404'),
-    hidden: true
   }
 ]
 
