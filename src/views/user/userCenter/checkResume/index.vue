@@ -1,21 +1,20 @@
 ﻿<template>
   <div class="container">
-    <div v-for="(item,i) in form" :key="i" class="state">
-      <el-descriptions :title="item.title">
+    <el-card v-for="(item,i) in form" :key="i" class="state">
+      <el-descriptions :title="item.position">
         <el-descriptions-item :label="lablename.type">{{ item.type }}</el-descriptions-item>
         <el-descriptions-item :label="lablename.workPlace">{{ item.workPlace }}</el-descriptions-item>
         <el-descriptions-item :label="lablename.position">{{ item.position }}</el-descriptions-item>
         <el-descriptions-item :label="lablename.salaries">{{ item.salaries }}</el-descriptions-item>
         <el-descriptions-item :label="lablename.frequency">{{ item.frequency }}</el-descriptions-item>
         <el-descriptions-item :label="lablename.period">{{ item.period }}</el-descriptions-item>
-        <el-descriptions-item :label="lablename.now_location">{{ item.now_location }}</el-descriptions-item>
-        <el-descriptions-item :label="lablename.education">{{ item.education }}</el-descriptions-item>
-        <el-descriptions-item :label="lablename.workExperience">{{ item.workExperience }}</el-descriptions-item>
         <template slot="extra">
-          <el-tag>{{ item.state }}</el-tag>
+          <el-tag v-if="item.status === 0">未审核</el-tag>
+          <el-tag v-if="item.status === 1" type="success">通过</el-tag>
+          <el-tag v-if="item.status === 2" type="danger">不通过</el-tag>
         </template>
       </el-descriptions>
-    </div>
+    </el-card>
   </div>
 </template>
 
@@ -28,12 +27,6 @@ export default {
         'name': '姓名',
         'email': '邮箱',
         'phone': '手机',
-        'now_location': '现居地',
-        'education': '教育背景',
-        'workExperience': '工作经历',
-        'schoolExperience': '在校经历',
-        'jobExperience': '职业经历',
-        'selfIntroduction': '自我介绍',
         title: '标题',
         type: '招聘类型',
         position: '岗位',
@@ -52,7 +45,7 @@ export default {
   methods: {
     getAll() {
       getAllSend().then(response => {
-        // this.form = response.data
+        this.form = response.data
         console.log(response.data)
       })
     }
