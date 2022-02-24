@@ -1,7 +1,9 @@
 ﻿<template>
   <div class="container">
+    <h1 v-if="showTag">您目前暂时没有投递简历</h1>
+    <el-img :src="imgs"></el-img>
     <el-card v-for="(item,i) in form" :key="i" class="state">
-      <el-descriptions :title="item.position">
+      <el-descriptions v-if="!showTag" :title="item.position">
         <el-descriptions-item :label="lablename.type">{{ item.type }}</el-descriptions-item>
         <el-descriptions-item :label="lablename.workPlace">{{ item.workPlace }}</el-descriptions-item>
         <el-descriptions-item :label="lablename.position">{{ item.position }}</el-descriptions-item>
@@ -23,6 +25,8 @@ import { getAllSend } from '@/api/employee'
 export default {
   data() {
     return {
+      imgs: '../../../../icons/svg/nodata.svg',
+      showTag: false,
       lablename: { // 设置显示的标签
         'name': '姓名',
         'email': '邮箱',
@@ -46,7 +50,11 @@ export default {
     getAll() {
       getAllSend().then(response => {
         this.form = response.data
-        console.log(response.data)
+        console.log('获取投递的招聘信息和结果')
+        console.log(this.form)
+        if (this.form.length === 0) {
+          this.showTag = true
+        }
       })
     }
   }
