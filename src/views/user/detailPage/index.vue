@@ -2,6 +2,7 @@
   <div class="container">
     <!-- PART 1 信息名片 -->
     <el-card class="intro" style="margin-top:4rem">
+      <h1 v-if="!shwButton">快投！！！！急招！！！！！</h1>
       <!-- 第一部分 岗位的信息 -->
       <!-- 1. 标题，薪资信息 -->
       <el-row class="headline">
@@ -124,14 +125,12 @@ export default {
     },
     getJobInfo_USER() {
       getJobInformation_USR().then(response => {
-        console.log(response.data)
         this.index = response.data[this.id].id
         this.submitform = response.data[this.id]
         this.submitform.title = '招聘' + this.submitform.position
       })
     },
     todoLink() {
-      console.log(this.index)
       if (this.buttonName === '我要查看') {
         this.$router.push({ name: 'ResumeBrief', params: { name: '我要查看', id: this.index }})
       } else if (this.buttonName === '我要投递') {

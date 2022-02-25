@@ -84,7 +84,7 @@
             />
           </el-form-item>
           <el-form-item label="确认密码" prop="checkPass" label-width="80px">
-            <el-input v-model="submitForm.checkPass" type="password" autocomplete="off" placeholder="确认密码" />
+            <el-input v-model="submitForm.checkPass" autocomplete="off" placeholder="确认密码" />
           </el-form-item>
           <el-form-item label="身份" prop="type" label-width="80px">
             <el-select v-model="submitForm.type" placeholder="请选择您的身份">
@@ -114,7 +114,7 @@ export default {
         callback(new Error('请输入密码'))
       } else if (this.submitForm.checkPass !== '') {
         this.$refs.submitForm.validateField('checkPass')
-      } else if (value.length < 8) {
+      } else if (value.length < 6 || value.length > 14) {
         callback(new Error('密码长度不符，请重新输入'))
       } else {
         callback()
@@ -124,7 +124,8 @@ export default {
     var validatePass2 = (rule, value, callback) => {
       if (value === '') {
         callback(new Error('请再次输入密码'))
-      } else if (value !== this.submitForm.password) {
+      } else
+      if (value !== this.submitForm.password) {
         callback(new Error('两次输入密码不一致!'))
       } else {
         callback()
@@ -153,10 +154,10 @@ export default {
           { required: true, message: '请输入邮箱', trigger: 'blur' }
         ],
         password: [
-          { required: true, message: '长度在6-14之间，必须包括大小写字母和数字', validator: validatePass, trigger: 'blur' }
+          { required: true, validator: validatePass, trigger: 'blur' }
         ],
         checkPass: [
-          { required: true, message: '请再次输入密码', validator: validatePass2, trigger: 'blur' }
+          { required: true, validator: validatePass2, trigger: 'blur' }
         ],
         type: [
           { required: true, message: '请选择您的身份', trigger: 'change' }
@@ -255,13 +256,9 @@ $cursor: #fff;
   }
 }
 
-#app {
-  height: 100%;
-  background-color:#2d3a4b;
-}
-
 /* reset element-ui css */
 .login-container {
+  min-height: 40rem;
   .el-input {
     display: inline-block;
     height: 47px;
@@ -308,7 +305,7 @@ $dark_gray:#889aa4;
 $light_gray:#eee;
 
 .login-container {
-  min-height: 100%;
+  min-height: 40rem;
   width: 100%;
   background-color: $bg;
   overflow: hidden;
@@ -368,8 +365,8 @@ $light_gray:#eee;
     font-family: sans-serif;
     font-size: 125%;
     line-height: 1.15;
-    margin: 5px;
-}
+    margin: 0px;
+  }
 
 }
 </style>
