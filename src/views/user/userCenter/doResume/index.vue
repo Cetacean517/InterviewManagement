@@ -2,15 +2,7 @@
   <el-card class="InfoTable">
     <h1>我的简历</h1>
     <!-- 表单 :rules="rules" -->
-    <el-form ref="ruleForm" status-icon label-position="right" :model="ruleForm">
-      <!-- 第一行 出生年月 -->
-      <!-- <div class="form-flex1">
-         <el-form-item :label="lablename.birthday" required style="margin-left: 100px">
-          <el-form-item prop="birthday">
-            <el-date-picker v-model="ruleForm.birthday" type="month" placeholder="选择年份" style="width: 100%;margin-left: 100px" value-format="yyyy年MM月dd日" />
-          </el-form-item>
-        </el-form-item>
-      </div> -->
+    <el-form ref="ruleForm" label-position="right" :model="ruleForm">
       <!-- 第二行 姓名邮箱、手机号、出生地 -->
       <div class="form-flex" style="width:90%">
         <el-form-item :label="lablename.name" prop="name">
@@ -59,9 +51,9 @@
 
       <!--提交  -->
       <el-row style="display:flex; justify-content:flex-end;margin-right:100px">
-        <el-button v-if="isNull" class="buttonline" type="primary" plain @click="submitForm_One('ruleForm')">提交</el-button>
+        <el-button v-if="isNull" class="buttonline" type="primary" plain @click="submitForm_One('ruleForm')">创建简历</el-button>
         <el-button v-if="isSecond" class="buttonline" type="primary" plain @click="submitForm_Two('ruleForm')">修改</el-button>
-        <el-button v-if="isSend" class="buttonline" type="primary" plain @click="sendForm('ruleForm')">投递</el-button>
+        <el-button v-if="isSend&&!isNull" class="buttonline" type="primary" plain @click="sendForm('ruleForm')">投递</el-button>
         <el-button class="buttonline" type="primary" plain @click="resetForm('ruleForm')">重置</el-button>
         <!-- <el-button class="buttonline" type="success" plain @click="$router.push('/entrance/menu')">完成</el-button> -->
       </el-row>
@@ -146,8 +138,8 @@ export default {
   },
   created: function() {
     this.getResume_USR()
-    this.id = this.$route.params.id
-    console.log(this.id)
+    this.id = this.$router.params.id
+    console.log(this.$router)
     if (this.$route.params.name) {
       this.isSend = true
     }
@@ -156,12 +148,8 @@ export default {
     getResume_USR() {
       getResume().then(response => {
         // 更新建立的内容
+        console.log('获取建立内容：')
         console.log(response.data)
-        this.ruleForm = response.data
-        var eduList = response.data.education.split('-')
-        this.fullTimeDegree = eduList[0]
-        this.fullTimeSchool = eduList[1]
-        this.fullTimeMajor = eduList[2]
         // 判断是第一次填写，还是新增。
         // 第一次填写，调用addResume接口 isNull = true
         // 第二次填写，调用fixResume接口 isNull = false
@@ -173,6 +161,25 @@ export default {
             this.isSecond = true
           }
         }
+        // 如果建立不是全空，则新增数据
+        if (!this.isNull) {
+          this.ruleForm.name = response.data.name
+          this.ruleForm.email = response.data.email
+          this.ruleForm.phone = response.data.phone
+          this.ruleForm.nowLocation = response.data.nowLocation
+          this.ruleForm.education = response.data.education
+          this.ruleForm.workExperience = response.data.workExperience
+          this.ruleForm.schoolExperience = response.data.schoolExperience
+          this.ruleForm.jobExperience = response.data.jobExperience
+          this.ruleForm.selfIntroduction = response.data.selfIntroduction
+          var eduList = response.data.education.split('-')
+          this.fullTimeDegree = eduList[0]
+          this.fullTimeSchool = eduList[1]
+          this.fullTimeMajor = eduList[2]
+        } else {
+          this.$message('请先建立您的个性化简历模板')
+        }
+
         if (this.isSend) {
           this.isNull = false
           this.isSecond = false
@@ -184,21 +191,13 @@ export default {
         if (valid) {
           // 1. 先更新简历
           this.ruleForm.education = this.fullTimeDegree + '-' + this.fullTimeSchool + '-' + this.fullTimeMajor
+          console.log('创建简历')
           console.log(this.ruleForm)
           addResume(this.ruleForm).then(response => {
             console.log('Resume submit first done.')
-            console.log(response.data)
           })
-          // 完成后跳转;
-          console.log(this.$route.params.name)
-          if (!this.$route.params.name) {
-            // 如果直接从侧边栏进入，则跳转到CheckMSG;
-            this.$router.push({ name: 'CheckMSG' })
-          } else {
-            // 如果是从简历投递进入，先投递，后跳转到CheckResume
-            // 需要调投递的接口
-            this.$router.push({ name: 'CheckResume', params: { name: '我要投递' }})
-          }
+          // 2. 创建完，刷新简历界面
+          this.getResume_USR()
         } else {
           console.log('error submit!!')
           return false
@@ -240,6 +239,7 @@ export default {
           fixResume(this.ruleForm).then(response => {
             console.log('Resume submit second done.')
           })
+          console.log(this.id)
           postResume(this.id, this.ruleForm).then(response => {
             console.log('Resume submit second done.')
             console.log(response.data)

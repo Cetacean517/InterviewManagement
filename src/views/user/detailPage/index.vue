@@ -14,12 +14,6 @@
       </el-row>
       <el-row class="el-row">
         <el-col :span="23" :offset="1">
-          <!-- 公司 -->
-          <span style="font-size:1.6rem; font-weight:bold; font-style: italic; color:#1c67b3 "> 上海字节跳动有限公司</span>
-        </el-col>
-      </el-row>
-      <el-row class="el-row">
-        <el-col :span="23" :offset="1">
           <!-- 类型 -->
           <span class="tag">{{ lablename.type }}  : </span>
           <el-tag class="my-tag item">{{ submitform.type }}</el-tag>
@@ -130,6 +124,7 @@ export default {
     },
     getJobInfo_USER() {
       getJobInformation_USR().then(response => {
+        console.log(response.data)
         this.index = response.data[this.id].id
         this.submitform = response.data[this.id]
         this.submitform.title = '招聘' + this.submitform.position

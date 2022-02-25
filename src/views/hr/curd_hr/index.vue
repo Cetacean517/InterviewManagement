@@ -158,15 +158,19 @@ export default {
     addJobInfo() {
       addJobInformation(this.submitform).then(response => {
         this.getJobInfo()
+        this.$message('招聘信息新增成功')
       })
     },
     fixJobInfo() {
       fixJobInformation(this.fixId, this.submitform).then(response => {
+        this.getJobInfo()
+        this.$message('招聘信息修改成功')
       })
     },
     deleteJobInfo(i) {
       deleteJobInformation(this.form[i].id).then(response => {
         this.getJobInfo()
+        this.$message('招聘信息删除成功')
       })
     },
     cancelAdd(done) {

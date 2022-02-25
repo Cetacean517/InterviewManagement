@@ -27,11 +27,10 @@ export function fixJobInformation(id, data, token) {
   })
 }
 
-export function deleteJobInformation(data, id, token) {
+export function deleteJobInformation(id, token) {
   return request({
     url: '/api/employer/jobInformation/' + id,
     method: 'delete',
-    data,
     params: { token }
   })
 }
