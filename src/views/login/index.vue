@@ -45,13 +45,6 @@
         <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">登录</el-button>
         <el-button type="primary" style="width:100%;margin-bottom:30px; margin-left:0px" @click="showRegister = true">注册</el-button>
 
-      <!-- 需要加一个dialog -->
-      <!-- <div class="tips">
-        <span style="margin-right:20px;">username: 3q</span>
-        <span style="margin-right:20px;"> password: 123456</span>
-        <span> role: employer</span>
-      </div> -->
-
       </el-form>
     </div>
 
@@ -69,9 +62,6 @@
             <el-input v-model="submitForm.email" autocomplete="off" placeholder="邮箱" />
           </el-form-item>
           <el-form-item label="密码" prop="password" label-width="80px">
-            <!-- <span class="svg-container">
-              <svg-icon icon-class="password" />
-            </span> -->
             <el-input
               :key="passwordType"
               ref="password"
@@ -84,7 +74,16 @@
             />
           </el-form-item>
           <el-form-item label="确认密码" prop="checkPass" label-width="80px">
-            <el-input v-model="submitForm.checkPass" autocomplete="off" placeholder="确认密码" />
+            <el-input
+              :key="passwordType"
+              ref="password"
+              v-model="submitForm.checkPass"
+              :type="passwordType"
+              placeholder="确认密码"
+              name="password"
+              tabindex="2"
+              auto-complete="off"
+            />
           </el-form-item>
           <el-form-item label="身份" prop="type" label-width="80px">
             <el-select v-model="submitForm.type" placeholder="请选择您的身份">
@@ -219,7 +218,7 @@ export default {
           // 关闭窗口
           this.showRegister = false
           // 清空表格
-          const that = this.submitform
+          const that = this.submitForm
           that.username = ''
           that.type = ''
           that.email = ''
@@ -231,8 +230,20 @@ export default {
     getRegister() {
       console.log('注册表：')
       console.log(this.submitForm)
-      register(this.submitForm).then(response => {
+      const list = {
+        username: this.submitForm.username,
+        type: this.submitForm.type,
+        email: this.submitForm.email,
+        password: this.submitForm.password
+      }
+      register(list).then(response => {
         this.$message.success('注册成功')
+        const that = this.submitForm
+        that.username = ''
+        that.type = ''
+        that.email = ''
+        that.password = ''
+        this.submitForm.checkPass = ''
       }).catch(err => {
         console.log(err)
         this.$message.warning('注册失败')
