@@ -111,14 +111,14 @@ export default {
       const pass = { status: true }
       passResume(this.form.id, pass).then(response => {
         this.$message('简历已通过！')
-        location.reload()
+        this.getAll()
       })
     },
     Fail() {
       const fail = { status: false }
       passResume(this.form.id, fail).then(response => {
         this.$message('简历已拒绝！')
-        location.reload()
+        this.getAll()
       })
     }
   }
