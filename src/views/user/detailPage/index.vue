@@ -2,7 +2,7 @@
   <div class="container">
     <!-- PART 1 信息名片 -->
     <el-card class="intro" style="margin-top:4rem">
-      <h1 v-if="!shwButton">快投！！！！急招！！！！！</h1>
+      <h1 v-if="!shwButton" class="shbutton">快投！！！！急招！！！！！</h1>
       <!-- 第一部分 岗位的信息 -->
       <!-- 1. 标题，薪资信息 -->
       <el-row class="headline">
@@ -172,6 +172,10 @@ export default {
             .salary{
                 color:rgb(199, 84, 39);
             }
+        }
+        .shbutton{
+          width:90%;
+          margin: 5px 5px 0px 40px;
         }
         .tag{
             font-weight:500;

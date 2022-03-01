@@ -70,7 +70,7 @@ export const asyncRouterMap = [
       name: 'DetailPage',
       // hidden: true, // 用户查看招聘信息详细页，不能从侧边栏导航进入
       component: () => import('@/views/user/detailPage/index'),
-      meta: { title: '查看招聘详情', icon: 'el-icon-s-help', roles: ['ROLE_EMPLOYER', 'ROLE_EMPLOYEE'] }
+      meta: { title: '最新招聘需求（急招）', icon: 'el-icon-s-help', roles: ['ROLE_EMPLOYER', 'ROLE_EMPLOYEE'] }
     },
     {
       path: 'resumeBrief',
