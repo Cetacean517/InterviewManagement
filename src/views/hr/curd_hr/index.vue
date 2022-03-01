@@ -10,6 +10,11 @@
         </div>
       </el-col>
     </el-row>
+    <!-- 没有数据情况 -->
+    <div v-if="isShow" class="nodata">
+      <img src="./image/nodata.png" style="width:20rem">
+      <h1>目前未发布招聘信息</h1>
+    </div>
     <!-- 第一级页面 招聘信息展示 -->
     <div v-for="(item,i) in form" :key="i" class="hr-table">
       <el-card class="hr-card" shadow="hover" style="margin:'20rpx'">
@@ -122,6 +127,7 @@ export default {
   data() {
     return {
       formLabelWidth: '120px',
+      isShow: false,
       lablename: { // 设置显示的标签
         title: '标题',
         type: '招聘类型',
@@ -153,12 +159,16 @@ export default {
     getJobInfo() {
       getJobInformation().then(response => {
         this.form = response.data
+        if (this.form.length === 0) {
+          this.isShow = true
+        }
       })
     },
     addJobInfo() {
       addJobInformation(this.submitform).then(response => {
         this.getJobInfo()
         this.$message('招聘信息新增成功')
+        this.isShow = false
       })
     },
     fixJobInfo() {
@@ -217,6 +227,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.nodata{
+  margin-top: 10rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 .hr {
   &-container {
     margin: 70px;
