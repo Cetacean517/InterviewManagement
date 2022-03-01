@@ -138,8 +138,7 @@ export default {
   },
   created: function() {
     this.getResume_USR()
-    this.id = this.$router.params.id
-    console.log(this.$router)
+    this.id = this.$route.params.id
     if (this.$route.params.name) {
       this.isSend = true
     }
@@ -179,7 +178,6 @@ export default {
         } else {
           this.$message('请先建立您的个性化简历模板')
         }
-
         if (this.isSend) {
           this.isNull = false
           this.isSecond = false
@@ -237,12 +235,13 @@ export default {
           this.ruleForm.education = this.fullTimeDegree + '-' + this.fullTimeSchool + '-' + this.fullTimeMajor
           console.log(this.ruleForm)
           fixResume(this.ruleForm).then(response => {
-            console.log('Resume submit second done.')
+            console.log('Resume fix second done.')
           })
-          console.log(this.id)
-          postResume(this.id, this.ruleForm).then(response => {
+          postResume(this.id, this.ruleForm).then(_ => {
             console.log('Resume submit second done.')
-            console.log(response.data)
+            this.$message('投递成功')
+          }).catch(err => {
+            this.$message.error(err.response.data.msg)
           })
           // 完成后跳转;
           console.log(this.$route.params.name)

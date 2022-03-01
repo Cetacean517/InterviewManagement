@@ -1,6 +1,7 @@
 ﻿<template>
   <div class="container">
     <!-- 循环展示 -->
+    <h1 v-if="showTag">目前暂时没有简历投递</h1>
     <div v-for="(item,i) in form" :key="i" class="resume">
       <el-card class="resume_brief" shadow="hover" style="margin:'20rpx'">
         <el-descriptions>
@@ -8,7 +9,7 @@
             <h3>简历{{ i+1 }}</h3>
           </template>
           <el-descriptions-item :label="lablename.name">{{ item.name }}</el-descriptions-item>
-          <el-descriptions-item :label="lablename.now_location">{{ item.now_location }}</el-descriptions-item>
+          <el-descriptions-item :label="lablename.nowLocation">{{ item.nowLocation }}</el-descriptions-item>
           <el-descriptions-item :label="lablename.phone">{{ item.phone }}</el-descriptions-item>
           <el-descriptions-item :label="lablename.email">{{ item.email }}</el-descriptions-item>
           <el-descriptions-item :label="lablename.education">{{ item.education }}</el-descriptions-item>
@@ -27,11 +28,12 @@ export default {
   data() {
     return {
       id: '',
+      showTag: false,
       lablename: { // 设置显示的标签
         'name': '姓名',
         'email': '邮箱',
         'phone': '手机',
-        'now_location': '现居地',
+        'nowLocation': '现居地',
         'education': '教育背景',
         'workExperience': '工作经历',
         'schoolExperience': '在校经历',
@@ -48,8 +50,10 @@ export default {
   methods: {
     getAll() {
       getAllResume(this.id).then(response => {
-        console.log(response.data)
         this.form = response.data
+        if (this.form.length === 0) {
+          this.showTag = true
+        }
       })
     },
     todoLink(i) {

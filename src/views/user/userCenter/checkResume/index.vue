@@ -1,7 +1,6 @@
 ﻿<template>
   <div class="container">
     <h1 v-if="showTag">您目前暂时没有投递简历</h1>
-    <el-img :src="imgs"></el-img>
     <el-card v-for="(item,i) in form" :key="i" class="state">
       <el-descriptions v-if="!showTag" :title="item.position">
         <el-descriptions-item :label="lablename.type">{{ item.type }}</el-descriptions-item>
@@ -25,7 +24,6 @@ import { getAllSend } from '@/api/employee'
 export default {
   data() {
     return {
-      imgs: '../../../../icons/svg/nodata.svg',
       showTag: false,
       lablename: { // 设置显示的标签
         'name': '姓名',
