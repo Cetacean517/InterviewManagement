@@ -168,6 +168,7 @@ export default {
       addJobInformation(this.submitform).then(response => {
         this.getJobInfo()
         this.$message('招聘信息新增成功')
+        this.isShow = false
       })
     },
     fixJobInfo() {
