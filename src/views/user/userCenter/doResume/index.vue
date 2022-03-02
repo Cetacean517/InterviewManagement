@@ -276,12 +276,12 @@ export default {
 
 <style lang="scss" scoped>
 .InfoTable{
-  padding: 30px;
-  padding-left: 50px;
-  margin:100px 150px 100px 150px;
+  padding: 1.875rem;
+  padding-left: 3.125rem;
+  margin:6.25rem 9.375rem;
 }
 .buttonline{
-  margin-right: 10px;
+  margin-right: 0.625rem;
 }
 .title {
   font-size: 1rem;
