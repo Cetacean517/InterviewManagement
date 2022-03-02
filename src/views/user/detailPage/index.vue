@@ -60,8 +60,8 @@
         </el-col>
       </el-row>
       <el-row>
-        <el-col :span="5" :offset="19">
-          <el-button v-if="shwButton" class="font" type="warning" size="large" round style="padding:1.5rem 4rem; border-radius: 30px; margin-top:4rem" @click="todoLink">{{ buttonName }}</el-button>
+        <el-col :span="4" :offset="18">
+          <el-button v-if="shwButton" class="font" type="warning" size="large" round style="padding:1.5rem 3rem; border-radius: 30px; margin-top:4rem" @click="todoLink">{{ buttonName }}</el-button>
         </el-col>
       </el-row>
     </el-card>

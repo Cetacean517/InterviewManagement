@@ -21,7 +21,7 @@
 
       <!-- 全日制 -->
       <h3>全日制教育信息</h3>
-      <div class="form-flex">
+      <div class="form-flex" style="width:70%">
         <el-form-item label="全日制教育学历">
           <el-input v-model="fullTimeDegree" placeholder="全日制学历" />
         </el-form-item>
