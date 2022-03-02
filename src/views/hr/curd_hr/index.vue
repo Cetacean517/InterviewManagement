@@ -126,7 +126,7 @@ export default {
   name: 'CurdHR',
   data() {
     return {
-      formLabelWidth: '120px',
+      formLabelWidth: '7.5rem',
       isShow: false,
       lablename: { // 设置显示的标签
         title: '标题',
