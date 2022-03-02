@@ -103,7 +103,7 @@
         </el-form-item>
         <!-- 需要对频率设置选择框和数字类型填写框 -->
         <el-form-item :label="lablename.frequency" :label-width="formLabelWidth">
-          <el-input v-model="submitform.frequency" autocomplete="off" />
+          一周<el-input-number v-model="submitform.frequency" :min="1" :max="7" label="描述文字" type="number" autocomplete="off" @change="handleChange" />天
         </el-form-item>
         <el-form-item :label="lablename.period" :label-width="formLabelWidth">
           <el-input v-model="submitform.period" autocomplete="off" />
