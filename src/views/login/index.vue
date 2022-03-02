@@ -269,7 +269,6 @@ $cursor: #fff;
 
 /* reset element-ui css */
 .login-container {
-  min-height: 40rem;
   .el-input {
     display: inline-block;
     height: 47px;
@@ -316,7 +315,7 @@ $dark_gray:#889aa4;
 $light_gray:#eee;
 
 .login-container {
-  min-height: 40rem;
+  min-height: 62.2225rem;
   width: 100%;
   background-color: $bg;
   overflow: hidden;
