@@ -1,8 +1,8 @@
 ﻿<template>
   <el-card class="InfoTable">
     <h1>我的简历</h1>
-    <!-- 表单 :rules="rules" -->
-    <el-form ref="ruleForm" label-position="right" :model="ruleForm">
+    <!-- 表单  -->
+    <el-form ref="ruleForm" :rules="rules" label-position="right" :model="ruleForm">
       <!-- 第二行 姓名邮箱、手机号、出生地 -->
       <div class="form-flex" style="width:90%">
         <el-form-item :label="lablename.name" prop="name">
@@ -52,7 +52,7 @@
       <!--提交  -->
       <el-row style="display:flex; justify-content:flex-end;margin-right:100px">
         <el-button v-if="isNull" class="buttonline" type="primary" plain @click="submitForm_One('ruleForm')">创建简历</el-button>
-        <el-button v-if="isSecond" class="buttonline" type="primary" plain @click="submitForm_Two('ruleForm')">修改</el-button>
+        <el-button v-if="!isNull&&!isSend" class="buttonline" type="primary" plain @click="submitForm_Two('ruleForm')">修改</el-button>
         <el-button v-if="isSend&&!isNull" class="buttonline" type="primary" plain @click="sendForm('ruleForm')">投递</el-button>
         <el-button class="buttonline" type="primary" plain @click="resetForm('ruleForm')">重置</el-button>
         <!-- <el-button class="buttonline" type="success" plain @click="$router.push('/entrance/menu')">完成</el-button> -->
@@ -178,10 +178,10 @@ export default {
         } else {
           this.$message('请先建立您的个性化简历模板')
         }
-        if (this.isSend) {
-          this.isNull = false
-          this.isSecond = false
-        }
+        // if (this.isSend) {
+        //   this.isNull = false
+        //   this.isSecond = false
+        // }
       })
     },
     submitForm_One(formName) {
@@ -193,10 +193,12 @@ export default {
           console.log(this.ruleForm)
           addResume(this.ruleForm).then(response => {
             console.log('Resume submit first done.')
+            this.$message.success('简历创建成功')
           })
           // 2. 创建完，刷新简历界面
           this.getResume_USR()
         } else {
+          this.$message.error('简历创建失败！')
           console.log('error submit!!')
           return false
         }
